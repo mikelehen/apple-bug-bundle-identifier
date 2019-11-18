@@ -1,9 +1,9 @@
 # apple-bug-bundle-identifier
-Reproduces NSBundle bundleWithIdentifier crash with international characters in your app name
+Reproduces `[NSBundle bundleWithIdentifier]` crash with international characters in your app name.
 
 ## Repro Steps
 ```
-git clone git@github.com:mikelehen/apple-bug-bundle-identifier.git
+git clone https://github.com/mikelehen/apple-bug-bundle-identifier.git
 cd apple-bug-bundle-identifier
 pod install
 open BundleIdentifierBug.xcworkspace
@@ -13,7 +13,7 @@ Click play button to launch app.
 
 
 ## Result
-'''
+```
 thread #1, queue = 'com.apple.main-thread', stop reason = EXC_BAD_INSTRUCTION (code=EXC_I386_INVOP, subcode=0x0)
 frame #0: 0x0000000110cf4692 CoreFoundation`CFRelease + 82
 frame #1: 0x0000600002085d10
@@ -60,12 +60,11 @@ frame #41: 0x0000000113533ba2 UIKitCore`UIApplicationMain + 140
 frame #42: 0x000000010dd51c9b Ører`main at AppDelegate.swift:12:7
 frame #43: 0x00000001108e2541 libdyld.dylib`start + 1
 frame #44: 0x00000001108e2541 libdyld.dylib`start + 1
-
-'''
+```
 
 ## The Issue
-If you change your Build Settings > Packaging > Product Name to certain strings containing international characters, e.g. "Ører" then `[NSBundle bundleWithIdentifier]` crashes with the above callstack.
+If you change your Build Settings > Packaging > Product Name to certain strings containing international characters, e.g. `Ører` then `[NSBundle bundleWithIdentifier]` crashes with the above callstack.
 
 ![Repro Image](repro.png)
 
-It's worth noticing that when you change your package name, that affecs the ".app/" folder that your application lives in on disk.  Presumably there's a bug with constructing file paths or something.
+It's worth noticing that when you change your package name to `Ører` then your app ends up installing to a `Ører.app/` folder on disk.  Presumably there's a bug with constructing file paths or something.
