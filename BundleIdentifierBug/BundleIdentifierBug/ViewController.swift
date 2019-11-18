@@ -12,6 +12,7 @@ class ViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    // This bundle exists via the gRPC-C++ pod we depend on.
     if (Bundle(identifier:"org.cocoapods.grpcpp") != nil) {
       NSLog("Found bundle!")
     }
